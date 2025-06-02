@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Management</title>
+  <link rel="stylesheet" href="/css/adminstyle.css" />
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      min-width: 600px;
+    }
+    /* Responsive table styling */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #131212;
+      text-align: left;
+      transition: background-color 0.3s ease;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+     tr:hover {
+      background-color: #f9f9f9;
+    }
+    
+    button.delete-btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    button.delete-btn:hover {
+      background-color: #c0392b;
+      transform: scale(1.05);
+    }
+     /* Center and style the title */
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #333;
+      margin: 1rem 0;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+    h1:hover {
+      color: #eda011;
+      transform: scale(1.05);
+    }
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: 15% auto;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .modal-content h2 {
+      margin-bottom: 1rem;
+    }
+    .modal-content button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .confirm-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+    .cancel-btn {
+      background-color: #e1d58f;
+    }
+    /* Different hover colors for odd and even rows */
+tbody tr:nth-child(odd):hover {
+  background-color: #d6f0ff; /* light blue */
+}
+
+tbody tr:nth-child(even):hover {
+  background-color: #ffe6d6; /* light orange */
+}
+
+/* Hover effect on header row */
+thead tr:hover th {
+  background-color: #dfcd7d !important;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect on body rows */
+tbody tr:hover {
+  background-color: #f0f8ff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:nth-child(4n+1):hover {
+  background-color: #d6f0ff; /* light blue */
+}
+tbody tr:nth-child(4n+2):hover {
+  background-color:  #d6f0ff; /* light orange */
+}
+tbody tr:nth-child(4n+3):hover {
+  background-color:  #d6f0ff; /* light green */
+}
+tbody tr:nth-child(4n+4):hover {
+  background-color:  #d6f0ff;  /* light yellow */
+}
+
+  </style>
+</head>
+<body>
+  <%- include('../components/adminheader') %>
+  <%- include('../components/sidebar') %>
+
+  <main class="admin-main-content">
+    <h1>User Management</h1>
+
+    <% if (users && users.length > 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(user => { %>
+            <tr>
+              <td><%= user.id %></td>
+              <td><%= user.firstName %></td>
+              <td><%= user.lastName %></td>
+              <td><%= user.email %></td>
+              <td><%= user.role %></td>
+              <td>
+                <form id="delete-form-<%= user.id %>" action="/admin/userManagement/delete/<%= user.id %>" method="POST">
+                  <button type="button" class="delete-btn" onclick="showConfirmationModal('<%= user.id %>')">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p>No users found.</p>
+    <% } %>
+  </main>
+
+  <!-- Modal -->
+  <div id="confirmationModal" class="modal">
+    <div class="modal-content">
+      <h2>Confirm Deletion</h2>
+      <p>Are you sure you want to delete this user?</p>
+      <button class="confirm-btn" onclick="confirmDelete()">Yes, Delete</button>
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedUserId = null;
+
+    function showConfirmationModal(userId) {
+      selectedUserId = userId;
+      document.getElementById('confirmationModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      selectedUserId = null;
+      document.getElementById('confirmationModal').style.display = 'none';
+    }
+
+    function confirmDelete() {
+      if (selectedUserId) {
+        document.getElementById(`delete-form-${selectedUserId}`).submit();
+      }
+    }
+
+    // Close modal if user clicks outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('confirmationModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+
+    // Get the current page URL path
+  const currentPath = window.location.pathname;
+
+  // Select all sidebar links
+  const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+
+  // Loop through each link
+  sidebarLinks.forEach(link => {
+    // Check if the href matches current path
+    if (link.getAttribute('href') === currentPath) {
+      link.classList.add('active-page');
+    }
+  });
+
+  </script>
+
+  <%- include('../components/adminfooter') %>
+</body>
+</html>

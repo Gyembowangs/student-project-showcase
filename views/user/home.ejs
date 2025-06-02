@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <title>Student Project Showcase</title>
+  <link rel="stylesheet" href="/css/home.css" />
+</head>
+<body>
+
+  <header>
+    <%- include('../components/header') %>
+  </header>
+
+  <main>
+    <!-- Intro Section -->
+    <section class="intro">
+      <div class="intro-container">
+        <div class="left-image">
+          <img src="/images/students.jpg" alt="Students working" />
+        </div>
+        <div class="right-content">
+          <div class="section-bar">
+            <h3>Showcase Your Talent. Get Recognized!</h3>
+          </div>
+          <div class="highlight-box">
+            <p>
+              "A dynamic platform designed for students to showcase their innovative projects,
+              receive valuable feedback from peers and industry experts, and build a strong
+              portfolio that enhances their academic and career opportunities."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects">
+      <div class="section-bar">
+        <h2>By the end of this year, we expect...</h2>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="prediction-stats">
+      <div class="stats-container">
+        <div class="stat">
+          <img src="/images/project.png" alt="Projects Icon" />
+          <h3>100+</h3>
+          <p>Innovative Projects Showcased</p>
+        </div>
+        <div class="stat">
+          <img src="/images/users.png" alt="Users Icon" />
+          <h3>350+</h3>
+          <p>Active Student Contributors</p>
+        </div>
+        <div class="stat">
+          <img src="/images/comments.jpeg" alt="Comments Icon" />
+          <h3>1500+</h3>
+          <p>Peer Feedback Comments</p>
+        </div>
+        <div class="stat">
+          <img src="/images/career.png" alt="Career Icon" />
+          <h3>70%</h3>
+          <p>Students Gaining Career Opportunities</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer">
+    <%- include('../components/footer') %>
+  </footer>
+
+</body>
+</html>

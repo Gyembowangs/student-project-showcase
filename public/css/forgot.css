@@ -1,0 +1,189 @@
+/* Reset and base */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #C1D1D0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  padding: 10px;
+  color: #333;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 50%;
+  max-width: 500px;
+  min-height: 280px;
+}
+
+/* Logo section */
+.logo-section {
+  background-color: #FFA500;
+  color: #fff;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  min-width: 140px;
+  text-align: center;
+}
+
+.logo-section img {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.logo-section h1 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Form section */
+.form-section {
+  width: 65%;
+  padding: 2rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  color: #111827;
+}
+
+.form-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #f6a83c;
+  text-align: center;
+}
+
+.form-section p {
+  color: #198754; /* green success */
+  margin-bottom: 1.25rem;
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+input[type="email"] {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1.2rem;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+input[type="email"]:focus {
+  border-color: #f6a83c;
+  box-shadow: 0 0 6px rgba(246, 168, 60, 0.6);
+}
+
+button {
+  background-color: #f6a83c;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.7rem 0;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  user-select: none;
+}
+
+button:hover {
+  background-color: #e4942e;
+}
+
+/* OK button specific style */
+.ok-button {
+  background-color: #10b981;
+  margin-top: 1rem;
+}
+
+.ok-button:hover {
+  background-color: #059669;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    max-width: 95%;
+    min-height: auto;
+  }
+
+  .logo-section, .form-section {
+    width: 100%;
+    padding: 1.5rem 1.2rem;
+  }
+
+  .logo-section {
+    padding-bottom: 1rem;
+  }
+
+  .logo-section img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .logo-section h1 {
+    font-size: 1.1rem;
+  }
+
+  .form-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  input[type="email"] {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.9rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+    padding: 0.65rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-section h1 {
+    font-size: 1rem;
+  }
+
+  .form-section h2 {
+    font-size: 1.1rem;
+  }
+
+  input[type="email"] {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 0.6rem 0;
+  }
+}

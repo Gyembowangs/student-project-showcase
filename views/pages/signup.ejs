@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Project Showcase</title>
+  <link rel="stylesheet" href="/css/signup.css" />
+  <style>
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+      display: none;
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+    input.error, select.error {
+      border: 2px solid red;
+      outline: none;
+    }
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      max-width: 400px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-section">
+      <img src="/images/logo.png" alt="Logo" class="logo" />
+      <div class="logo-title">Student Project Showcase</div>
+    </div>
+
+    <div class="form-section">
+      <h2>Sign Up</h2>
+      <% if (typeof error !== 'undefined') { %>
+        <div style="color: red; margin-bottom: 10px;"><%= error %></div>
+      <% } %>
+      <form action="/signup" method="POST" id="signupForm" novalidate>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" required pattern="^[A-Za-z]{2,30}$" />
+        <div class="error-message" id="firstName-error">First name must be 2–30 letters.</div>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" required pattern="^[A-Za-z]{2,30}$" />
+        <div class="error-message" id="lastName-error">Last name must be 2–30 letters.</div>
+
+        <label for="role">Role:</label>
+        <select id="role" name="role" required>
+          <option value="student">Student</option>
+          <option value="lecturer">Lecturer</option>
+          <option value="guest">Guest</option>
+        </select>
+
+        <div id="courseField" style="display: none;">
+          <label for="course">Course:</label>
+          <select id="course" name="course">
+            <option value="">-- Select Course --</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Life Science">Life Science</option>
+            <option value="DSDA">DSDA</option>
+            <option value="DCPM">DCPM</option>
+            <option value="EPS">EPS</option>
+            <option value="New Programme">New Programme</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Statistics">Statistics</option>
+          </select>
+          <div class="error-message" id="course-error">Course is required for students.</div>
+        </div>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+        <div class="error-message" id="email-error">Invalid email format for selected role.</div>
+
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+        />
+        <div class="error-message" id="password-error">
+          Password must be at least 8 characters with letters, numbers, and special characters.
+        </div>
+
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required />
+        <div class="error-message" id="confirmPassword-error">Passwords do not match.</div>
+
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <p style="margin-top: 15px;">
+        Already have an account?
+        <a href="/login" style="color: #007bff">Login</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h2>Check Your Email</h2>
+      <p>A verification link has been sent to your email. Please verify to activate your account.</p>
+      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
+        <button onclick="redirectToGmail()">Go to Gmail</button>
+        <button onclick="redirectToLogin()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Modal -->
+  <div id="errorModal" class="modal" style="display: none;">
+    <div class="modal-content modal-error">
+      <h2>Email Verification Failed</h2>
+      <p>We couldn’t send the verification email. Please try again later.</p>
+      <button onclick="closeErrorModal()">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById("signupForm");
+    const roleSelect = document.getElementById("role");
+    const courseField = document.getElementById("courseField");
+    const courseSelect = document.getElementById("course");
+
+    const showError = (id) => {
+      document.getElementById(id + "-error").style.display = "block";
+      document.getElementById(id).classList.add("error");
+    }
+
+    const clearError = (id) => {
+      document.getElementById(id + "-error").style.display = "none";
+      document.getElementById(id).classList.remove("error");
+    }
+
+    const validateName = (name) => /^[A-Za-z]{2,30}$/.test(name);
+
+    const validateCollegeEmail = (email, role) => {
+  const collegePattern = /^\d{8}\.sherubtse@rub\.edu\.bt$/;
+  if (role === "guest") {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // any valid email for guests
+    } else {
+      return collegePattern.test(email); // strict college email pattern for students/lecturers
+    }
+  };
+
+
+    const validatePassword = (password) => {
+      return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(password);
+    }
+
+    const toggleRoleFields = () => {
+      if (roleSelect.value === "student") {
+        courseField.style.display = "block";
+        courseSelect.setAttribute("required", "required");
+      } else {
+        courseField.style.display = "none";
+        courseSelect.removeAttribute("required");
+        clearError("course");
+      }
+    }
+
+    document.getElementById("confirmPassword").addEventListener("input", () => {
+      const pwd = document.getElementById("password").value;
+      const confirmPwd = document.getElementById("confirmPassword").value;
+      if (pwd !== confirmPwd) {
+        showError("confirmPassword");
+      } else {
+        clearError("confirmPassword");
+      }
+    });
+
+    document.getElementById("email").addEventListener("input", () => {
+      const email = document.getElementById("email").value.trim();
+      const role = roleSelect.value;
+      if (!validateCollegeEmail(email, role)) {
+        showError("email");
+      } else {
+        clearError("email");
+      }
+    });
+
+    document.getElementById("password").addEventListener("input", () => {
+      const pwd = document.getElementById("password").value.trim();
+      if (!validatePassword(pwd)) {
+        showError("password");
+      } else {
+        clearError("password");
+      }
+    });
+
+    document.getElementById("course").addEventListener("change", () => {
+      if (roleSelect.value === "student" && !courseSelect.value) {
+        showError("course");
+      } else {
+        clearError("course");
+      }
+    });
+
+    const validateRealtimeInput = (id, validator) => {
+      const input = document.getElementById(id);
+      input.addEventListener("input", () => {
+        if (!validator(input.value.trim())) {
+          showError(id);
+        } else {
+          clearError(id);
+        }
+      });
+    }
+
+    validateRealtimeInput("firstName", validateName);
+    validateRealtimeInput("lastName", validateName);
+
+    signupForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      let valid = true;
+
+      const inputs = ["firstName", "lastName", "email", "password", "confirmPassword"];
+      for (const id of inputs) {
+        const input = document.getElementById(id);
+        input.dispatchEvent(new Event("input"));
+        if (input.classList.contains("error")) valid = false;
+      }
+
+      if (roleSelect.value === "student" && !courseSelect.value) {
+        showError("course");
+        valid = false;
+      }
+
+      if (valid) signupForm.submit();
+    });
+
+    function redirectToLogin() {
+      window.location.href = "/login";
+    }
+
+    function redirectToGmail() {
+      window.open("https://mail.google.com", "_blank");
+    }
+
+    function closeErrorModal() {
+      document.getElementById("errorModal").style.display = "none";
+    }
+
+    window.addEventListener("DOMContentLoaded", toggleRoleFields);
+    roleSelect.addEventListener("change", () => {
+      toggleRoleFields();
+      document.getElementById("email").dispatchEvent(new Event("input")); // Revalidate email on role change
+    });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("verification") === "success") {
+      document.getElementById("successModal").style.display = "flex";
+    } else if (urlParams.get("verification") === "failed") {
+      document.getElementById("errorModal").style.display = "flex";
+    }
+  </script>
+</body>
+</html>

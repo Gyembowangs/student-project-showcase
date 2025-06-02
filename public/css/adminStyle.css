@@ -1,0 +1,130 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  background: #eef3f4;
+  min-height: 100vh;
+}
+
+/* Fixed header at top */
+.topbar {
+  background: #f4a623;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.topbar .logo-box {
+  display: flex;
+  align-items: center;
+}
+
+.topbar .logo-box img {
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.project-title {
+  font-weight: bold;
+  font-size: 20px;
+  color: black;
+}
+
+/* Sidebar fixed below header and above footer */
+.sidebar {
+  position: fixed;
+  width: 230px;
+  background: #cde1e3;
+  padding-top: 30px;
+  position: fixed;
+  top: 60px;    /* height of header */
+  bottom: 60px; /* height of footer */
+  left: 0;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 20px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+  color: black;
+  transition: background 0.3s;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+  background-color: #a2c6c8;
+  border-left: 5px solid #ff9900;
+}
+
+.sidebar .icon {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.sidebar-nav a.active-page {
+  background-color: #007bff; /* Highlight background */
+  color: white;              /* Text color */
+  font-weight: bold;
+  border-radius: 5px;
+  padding-left: 15px;
+}
+
+
+/* Footer fixed at bottom, aligned with sidebar */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;       /* stretch from left to right */
+  height: 60px;
+  background-color: #f4a623;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  z-index: 1000;
+}
+
+
+/* Main container pushed right and below header */
+.container {
+  margin-left: 230px; /* sidebar width */
+  padding: 20px 30px;
+  padding-top: 80px; /* below header */
+  min-height: calc(100vh - 60px); /* full viewport height minus header */
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Optional: scroll on main content if needed */
+.container {
+  overflow-y: auto;
+  height: calc(100vh - 60px);
+}

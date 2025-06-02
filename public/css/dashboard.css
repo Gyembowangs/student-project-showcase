@@ -1,0 +1,62 @@
+html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-container {
+      flex: 1;
+      padding-top: 120px; /* Adjusted top padding */
+    }
+
+    footer {
+      background-color: #f8f9fa;
+      padding: 20px 0;
+      margin-top: auto;
+      text-align: center;
+    }
+
+    .project-title {
+      font-weight: bold;
+      transition: all 0.3s ease;
+      color: #333;
+    }
+
+    .project-title:hover {
+      color: #f0c850;
+      transform: scale(1.05);
+    }
+
+    .blur-background {
+      filter: blur(5px);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .comment-card {
+      position: relative;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .modal-content {
+      border-radius: 10px;
+    }
+
+    .modal-backdrop.show {
+      backdrop-filter: blur(5px);
+    }
+
+    table .btn:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: all 0.2s ease-in-out;
+    }

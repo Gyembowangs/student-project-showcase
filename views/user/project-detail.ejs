@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <title>Student Project Showcase</title>
+  <link rel="stylesheet" href="/css/project-detail.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <header>
+    <%- include('../components/header') %>
+  </header>
+
+  <div class="project-card">
+    <div class="heading">
+      <a href="/user/projects" class="back-arrow">←</a>
+      <h1 class="project-title">Project Title: <%= project.projectTitle %></h1>
+    </div>
+
+    <div class="main-content">
+      <div class="left-section">
+        <div class="image-container">
+          <img src="/uploads/<%= project.projectImage %>" alt="<%= project.projectTitle %>" class="project-image" />
+        </div>
+
+        <div class="files-box">
+          <h3 class="section-title">Project Files:</h3>
+          <% if (additionalFiles && additionalFiles.length > 0) { %>
+            <ul class="file-list">
+              <% additionalFiles.forEach(file => { %>
+                <li><a href="/uploads/<%= file %>" class="file-link" download><%= file %></a></li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p>No additional files available.</p>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="right-section">
+        <div class="description-box">
+          <h3 class="section-title">Project Description:</h3>
+          <p><%= project.projectDescription %></p>
+        </div>
+
+        <div class="links-box">
+          <h3 class="section-title">Project Links:</h3>
+          <% if (project.projectLinks) { %>
+            <ul class="link-list">
+              <% const links = project.projectLinks.split(','); links.forEach(link => { %>
+                <li><a href="<%= link.trim() %>" class="project-link" target="_blank"><%= link.trim() %></a></li>
+              <% }) %>
+            </ul>
+          <% } else { %>
+            <p>No project links available.</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn" onclick="toggleForm('rate-form')">Rate Project</button>
+      <button class="action-btn" onclick="toggleForm('comment-form')">Give Comment</button>
+      <button class="action-btn" onclick="toggleForm('comments-box')">View Comments</button>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="success-message">
+      <p>Thank you for your feedback! Your submission was successful.</p>
+      <button onclick="hideSuccessMessage()">OK</button>
+    </div>
+
+    <!-- Rating Form -->
+    <div class="form-card" id="rate-form">
+      <h3>Rate Project</h3>
+      <form id="rateForm" action="/projects/<%= project.id %>/rate" method="POST">
+        <label for="rating">Rate Project (1 to 5):</label>
+        <input type="number" id="rating" name="ratingValue" min="1" max="5" required />
+        <button type="submit">Submit Rating</button>
+      </form>
+    </div>
+
+    <!-- Comment Form -->
+    <div class="form-card" id="comment-form">
+      <h3>Leave a Comment</h3>
+      <form id="commentForm" action="/projects/<%= project.id %>/comment" method="POST">
+        <input type="hidden" name="projectId" value="<%= project.id %>" />
+        <label for="comment">Your Comment:</label>
+        <textarea id="comment" name="commentText" required></textarea>
+        <button type="submit">Submit Comment</button>
+      </form>
+    </div>
+
+    <!-- Comments Display -->
+    <div class="form-card" id="comments-box">
+      <h3>User Comments</h3>
+      <% if (comments && comments.length > 0) { %>
+        <ul class="comment-list">
+          <% comments.forEach(comment => { %>
+            <li>
+              <strong>Anonymous</strong>
+              <p><%= comment.commentText %></p>
+            </li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p>No comments yet.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <footer>
+    <%- include('../components/footer') %>
+  </footer>
+
+  <script>
+    function toggleForm(formId) {
+      const form = document.getElementById(formId);
+      const isVisible = form.style.display === 'block';
+      form.style.display = isVisible ? 'none' : 'block';
+
+      ['rate-form', 'comment-form', 'comments-box'].forEach(id => {
+        if (id !== formId) document.getElementById(id).style.display = 'none';
+      });
+    }
+
+    function hideSuccessMessage() {
+      document.getElementById('success-message').style.display = 'none';
+    }
+
+    document.getElementById('rateForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      fetch(this.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(this))
+      }).then(res => {
+        if (res.ok) showSuccessMessage();
+      });
+    });
+
+    document.getElementById('commentForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      fetch(this.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(this))
+      }).then(res => {
+        if (res.ok) showSuccessMessage();
+      });
+    });
+
+    function showSuccessMessage() {
+      document.getElementById('success-message').style.display = 'block';
+      ['rate-form', 'comment-form'].forEach(id => {
+        document.getElementById(id).style.display = 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>

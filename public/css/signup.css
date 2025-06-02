@@ -1,0 +1,147 @@
+* {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(to right, #dfe9f3, #ffffff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 10px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      width: 700px;
+      max-width: 100%;
+      background-color: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .container:hover {
+      transform: scale(1.01);
+    }
+
+    .logo-section {
+      flex: 1;
+      background: linear-gradient(to bottom right, #f6a83c, #ffa726);
+      padding: 20px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-width: 180px;
+      flex-shrink: 0;
+    }
+
+    .logo {
+      width: 90px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .logo-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .form-section {
+      flex: 1.8;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 300px;
+    }
+
+    h2 {
+      color: #f6a83c;
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 0.85rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    input:focus, select:focus {
+      border-color: #f6a83c;
+      outline: none;
+    }
+
+    button {
+      background-color: #f6a83c;
+      color: white;
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #e28f2a;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 0.75rem;
+      display: none;
+      margin-top: -8px;
+      margin-bottom: 10px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-content.modal-error h2 {
+      color: red;
+    }
+
+    .modal-content button {
+      margin-top: 15px;
+    }
+
+    input.error {
+      border-color: red;
+    }

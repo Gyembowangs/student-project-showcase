@@ -1,0 +1,33 @@
+<!-- views/pages/verify-message.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Project Showcase</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; padding: 40px; }
+    .card {
+      background: #fff;
+      padding: 30px;
+      margin: auto;
+      display: inline-block;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .card h2 { color: #333; }
+    .card p { margin-top: 10px; }
+  </style>
+  <script>
+    setTimeout(() => {
+      window.location.href = '/login';
+    }, 7000); // Redirect after 7 seconds
+  </script>
+</head>
+<body>
+  <div class="card">
+    <h2>📨 Verification Email Sent</h2>
+    <p>Hello <strong><%= firstName %></strong>, we've sent a verification link to <strong><%= email %></strong>.</p>
+    <p>Please check your inbox and verify your email to proceed.</p>
+    <p>You’ll be redirected to the login page shortly...</p>
+  </div>
+</body>
+</html>

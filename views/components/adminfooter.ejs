@@ -1,0 +1,16 @@
+  <footer class="footer">
+    <p>&copy; 2025 Admin Dashboard. All rights reserved.</p>
+  </footer>
+</body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const navItems = document.querySelectorAll(".sidebar ul li");
+    navItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        navItems.forEach((el) => el.classList.remove("active"));
+        item.classList.add("active");
+      });
+    });
+  });
+</script>
+</html>

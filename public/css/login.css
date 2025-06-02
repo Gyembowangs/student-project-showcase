@@ -1,0 +1,297 @@
+/* Reset and base */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #C1D1D0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 10px;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    max-width: 580px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+
+/* Logo section */
+.logo-section {
+    flex: 1;
+    background-color: #f6a83c;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 150px;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.logo-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    letter-spacing: 0.05em;
+}
+
+/* Form section */
+.form-section {
+    flex: 2;
+    padding: 20px 30px; /* reduced vertical padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+h2 {
+    color: #f6a83c;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 700;
+}
+
+label {
+    font-size: 1rem;
+    margin: 6px 0 4px; /* reduced bottom margin */
+    color: #f6a83c;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+input {
+    width: 100%;
+    padding: 8px 12px; /* smaller vertical padding */
+    font-size: 0.95rem;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 8px; /* less space between inputs */
+    transition: border-color 0.25s ease;
+    outline: none;
+}
+
+input:focus {
+    border-color: #f6a83c;
+    box-shadow: 0 0 5px rgba(246, 168, 60, 0.5);
+}
+
+button {
+    background-color: #f6a83c;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 10px 0; /* smaller vertical padding */
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background-color 0.25s ease;
+}
+
+button:hover {
+    background-color: #e4942e;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        max-width: 95%;
+    }
+
+    .logo-section, .form-section {
+        width: 100%;
+        padding: 20px 15px;
+    }
+
+    .logo {
+        width: 70px;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+        margin-bottom: 16px;
+    }
+
+    label {
+        font-size: 0.9rem;
+        margin: 5px 0 3px;
+    }
+
+    input {
+        font-size: 0.9rem;
+        padding: 7px 10px;
+        margin-bottom: 6px;
+    }
+
+    button {
+        font-size: 0.95rem;
+        padding: 9px 0;
+        margin-top: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-title {
+        font-size: 1rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+        margin-bottom: 14px;
+    }
+
+    label {
+        font-size: 0.85rem;
+        margin: 4px 0 2px;
+    }
+
+    input {
+        font-size: 0.85rem;
+        padding: 6px 8px;
+        margin-bottom: 5px;
+    }
+
+    button {
+        font-size: 0.9rem;
+        padding: 8px 0;
+        margin-top: 5px;
+    }
+}
+
+/* Forgot Password Specific Styling */
+.main-container {
+    display: flex;
+    flex-direction: row;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 90%;
+    max-width: 800px;
+}
+
+.main-container .logo-section {
+    background-color: #FFA500;
+    color: #ffffff;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+}
+
+.main-container .logo-section img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+}
+
+.main-container .logo-section h1 {
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.main-container .form-section {
+    width: 60%;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-container .form-section h2 {
+    margin-bottom: 1.5rem;
+    color: #111827;
+}
+
+.main-container .form-section p {
+    color: #198754;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.main-container input[type="email"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.main-container input[type="email"]:focus {
+    border-color: #242568;
+    outline: none;
+}
+
+.main-container button {
+    background-color: #FFA500;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.main-container button:hover {
+    background-color: #151344;
+}
+
+.main-container .ok-button {
+    background-color: #10b981;
+    margin-top: 1rem;
+}
+
+.main-container .ok-button:hover {
+    background-color: #059669;
+}
+
+/* Responsive layout for forgot-password */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .main-container .logo-section,
+    .main-container .form-section {
+        width: 100%;
+    }
+
+    .main-container .logo-section {
+        padding: 1.5rem;
+    }
+
+    .main-container .form-section {
+        padding: 2rem;
+    }
+}

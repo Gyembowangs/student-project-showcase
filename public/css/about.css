@@ -1,0 +1,242 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f8f9fa;
+}
+
+.about-hero {
+  padding: 40px 20px;
+  background-color: #fff;
+}
+
+.hero-content {
+  padding-top: 50px; /* space below the fixed header */
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-text h1 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.hero-text p {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  border: 3px solid #f6a83c;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* IMAGE hover effect globally */
+img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.hero-image img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1); /* Slight brightening effect */
+}
+
+/* Global image hover effect EXCEPT the one with class .no-hover */
+img:not(.no-hover):hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+/* Apply hover effect to all cards or boxes */
+.mission:hover,
+.vision:hover,
+.team-member:hover,
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #fff6e5; /* Light warm color */
+  border-color: #ffa500;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission-vision {
+  display: flex;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  gap: 30px;
+}
+
+.mission,
+.vision {
+  flex: 1;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 3px solid #f6a83c;
+}
+
+.mission h2,
+.vision h2 {
+  color: #f6a83c;
+  margin-bottom: 15px;
+}
+
+.why-choose-us {
+  background: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.feature-card {
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+}
+
+.feature-card i {
+  font-size: 40px;
+  color: #f6a83c;
+  margin-bottom: 20px;
+}
+
+.team-section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.team-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  overflow: hidden;
+}
+
+/* Updated team-slider to show 5 profiles per screen */
+.team-slider {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  justify-content: flex-start;
+}
+
+.team-slider::-webkit-scrollbar {
+  display: none;
+}
+
+/* Width so 5 profiles fit in one row with gaps */
+.team-member {
+  flex: 0 0 calc((100% - 80px) / 5);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.team-member:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background-color: #fff6e5;
+  border: 3px solid #ffa500;
+}
+
+.team-member img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.team-member:hover img {
+  transform: scale(1.1);
+}
+
+.team-member h3 {
+  color: #333;
+  margin: 10px 0;
+}
+
+.team-member p {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .team-member {
+    flex: 0 0 calc((100% - 40px) / 3); /* 3 per row */
+  }
+}
+
+@media (max-width: 768px) {
+  .mission-vision {
+    flex-direction: column;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .team-slider {
+    flex-wrap: nowrap;
+  }
+
+  .team-member {
+    flex: 0 0 280px;
+  }
+}

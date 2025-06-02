@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+  <link rel="stylesheet" href="/css/adminStyle.css">
+  <link rel="stylesheet" href="/css/admindashboard.css">
+</head>
+<body>
+  <%- include('../components/adminheader') %>
+<%- include('../components/sidebar') %>
+<main class="dashboard">
+ <section class="stats">
+  <div class="card">
+    <i class="fas fa-folder-open"></i>
+    Total Project
+    <span><%= stats.totalProjects %></span>
+  </div>
+  <div class="card">
+    <i class="fas fa-comments"></i>
+    Total Comment
+    <span><%= stats.totalComments %></span>
+  </div>
+  <div class="card">
+    <i class="fas fa-star"></i>
+    Total Rating
+    <span><%= stats.totalRatings %></span>
+  </div>
+  <div class="card">
+    <i class="fas fa-users"></i>
+    Total User
+    <span><%= stats.totalUsers %></span>
+  </div>
+</section>
+
+</main>
+
+</div> <!-- end container -->
+
+<%- include('../components/adminfooter') %>
+
+
+<script>
+  // Get the current page URL path
+  const currentPath = window.location.pathname;
+
+  // Select all sidebar links
+  const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+
+  // Loop through each link
+  sidebarLinks.forEach(link => {
+    // Check if the href matches current path
+    if (link.getAttribute('href') === currentPath) {
+      link.classList.add('active-page');
+    }
+  });
+</script>
+
+</body>
+</html>

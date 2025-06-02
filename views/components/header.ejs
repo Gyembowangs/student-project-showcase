@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Showcase</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+    }
+
+    .header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Ensures it stretches across the entire screen */
+  z-index: 1000;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFA500;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box; /* Ensures padding doesn’t shrink the width */
+}
+
+main {
+  padding-top: 80px; /* Adjust this value to match your header height */
+}
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-image {
+      height: 50px;
+      width: 50px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+
+    h1 {
+      font-size: 20px;
+      color: white;
+      margin: 0;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav li {
+      margin: 0 15px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .nav a:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .nav a.active {
+      background-color: white;
+      color: #FFA500;
+    }
+
+    .dropdown {
+      position: relative;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .sidebar a.active {
+      background-color: white;
+      color: #FFA500;
+    }
+
+    .dropdown img {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .dropdown .arrow {
+      color: white;
+      font-size: 14px;
+      margin-left: 6px;
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background-color: #C1D1D1;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 999;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-menu a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #FFA500;
+    }
+
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1100;
+    }
+
+    .menu-toggle span {
+      height: 3px;
+      width: 25px;
+      background-color: #fff;
+      margin: 4px 0;
+      transition: 0.3s;
+    }
+
+    .menu-toggle.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .menu-toggle.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 250px;
+      height: 100%;
+      background-color: #FFA500;
+      padding-top: 60px;
+      transition: left 0.3s ease;
+      z-index: 999;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin: 20px;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      display: block;
+      padding: 10px;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      .dropdown {
+        margin-left: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar for small screens -->
+  <div class="sidebar" id="sidebar">
+    <ul>
+      <li><a href="/user/home" onclick="closeSidebar()">Home</a></li>
+      <li><a href="/user/aboutus" onclick="closeSidebar()">About Us</a></li>
+      <% if (session.user && session.user.role === 'student') { %>
+        <li><a href="/user/upload" onclick="closeSidebar()">Upload</a></li>
+      <% } %>
+      <li><a href="/user/projects" onclick="closeSidebar()">Projects</a></li>
+    </ul>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <!-- Hamburger -->
+    <div class="menu-toggle" onclick="toggleSidebar(this)">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo">
+      <img src="/images/logo.png" alt="Logo" class="logo-image" />
+      <h1>Student Project Showcase</h1>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav">
+      <ul>
+        <li><a href="/user/home">Home</a></li>
+        <li><a href="/user/aboutus">About Us</a></li>
+        <% if (session && session.user && session.user.role === 'student'){ %>
+          <li><a href="/user/upload">Upload</a></li>
+        <% } %>
+        <li><a href="/user/projects">Projects</a></li>
+      </ul>
+    </nav>
+
+    <!-- User Profile Dropdown -->
+    <div class="dropdown" id="userDropdown" onclick="toggleDropdown(event)">
+      <img src="/images/user-profile.png" alt="User" />
+      <span class="arrow">▼</span>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <% if (session.user && session.user.role === 'student') { %>
+          <a href="/user/dashboard">Dashboard</a>
+        <% } %>
+        <a href="/logout">Logout</a>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- Scripts -->
+  <script>
+    function toggleSidebar(button) {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('active');
+      button.classList.toggle('open');
+    }
+
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('active');
+      document.querySelector('.menu-toggle').classList.remove('open');
+    }
+
+    function toggleDropdown(event) {
+      event.stopPropagation();
+      const dropdownMenu = document.getElementById('dropdownMenu');
+      dropdownMenu.classList.toggle('show');
+    }
+
+    window.addEventListener('click', function (e) {
+      const dropdown = document.getElementById('userDropdown');
+      const menu = document.getElementById('dropdownMenu');
+      if (!dropdown.contains(e.target)) {
+        menu.classList.remove('show');
+      }
+
+      const sidebar = document.getElementById('sidebar');
+      const toggleBtn = document.querySelector('.menu-toggle');
+      if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+        closeSidebar();
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const currentPath = window.location.pathname;
+
+    // Desktop nav
+    document.querySelectorAll('.nav a').forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active');
+      }
+    });
+
+    // Sidebar nav
+    document.querySelectorAll('.sidebar a').forEach(link => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active');
+      }
+    });
+  });
+  </script>
+</body>
+</html>

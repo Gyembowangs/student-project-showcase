@@ -1,0 +1,182 @@
+* {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+  }
+
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 10px;
+    min-height: auto;
+    background-color: #f0f2f5;
+  }
+
+  .upload-container {
+    width: 100%;
+    max-width: 600px;
+    background-color: #c1d1d0;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+    margin-bottom: 30px;
+  }
+  button[type="submit"] {
+    margin-bottom: 20px; /* add space below the submit button */
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #050505;
+  }
+  .upload-container h2 {
+    transition: color 0.3s ease, transform 0.3s ease;
+    cursor: default; /* optional: show pointer if you want */
+  }
+
+  .upload-container h2:hover {
+    color: #b28407;    /* lighter orange on hover */
+    transform: scale(1.05);  /* slight zoom */
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .file-info {
+    font-size: 13px;
+    color: #444;
+    margin-top: 5px;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #ffa500;
+    color: black;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  button[type="submit"]:hover {
+    background-color: #e6cb6e;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 12px;
+    display: none;
+  }
+  .success-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.2);
+    text-align: center;
+    z-index: 9999;
+  }
+
+  .success-card h2 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+  }
+
+  .success-card button {
+    background-color: #ffa500;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+.success-card button:hover {
+background-color: #e6cb6e;
+}
+
+ .error-message {
+      color: red;
+      display: none;
+      font-size: 0.9em;
+    }
+    .success-card {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #f0fff0;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+    .success-popup h2 {
+      margin-bottom: 1rem;
+    }
+    .success-popup button {
+      padding: 0.5rem 1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+
+  @media (max-width: 600px) {
+    .upload-container {
+      padding: 20px;
+    }
+
+    input[type="text"], textarea, input[type="file"] {
+      font-size: 13px;
+    }
+
+    button[type="submit"] {
+      font-size: 15px;
+    }
+  }

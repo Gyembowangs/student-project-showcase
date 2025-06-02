@@ -1,0 +1,106 @@
+/* adminstyle.css */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+}
+
+.dashboard {
+  padding: 2rem;
+  margin-left: 220px; /* space for sidebar */
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 180px);
+  gap: 2rem;
+  max-width: 800px; /* optional to limit max width */
+  margin: 0 auto; /* center horizontally */
+}
+
+.stats .card {
+  position: relative;
+  padding-left: 4.5rem;
+  font-size: 1.4rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stats .card i {
+  position: absolute;
+  left: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3rem;
+  opacity: 0.9;
+  transition: color 0.3s ease;
+}
+
+/* Icon colors */
+.stats .card:nth-child(1) i { color: #FF6B6B; } /* red */
+.stats .card:nth-child(2) i { color: #4ECDC4; } /* teal */
+.stats .card:nth-child(3) i { color: #FFD93D; } /* yellow */
+.stats .card:nth-child(4) i { color: #1A535C; } /* dark teal */
+
+/* Hover effect */
+.stats .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.stats .card:hover i {
+  filter: brightness(1.2);
+}
+
+
+.stats .card span {
+  margin-top: 1.2rem;
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+
+.card {
+  background-color: #f2f0c0;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
+}
+
+.card span {
+  margin-top: 1rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+  color:#141066;
+}
+
+/* Responsive layout */
+@media screen and (max-width: 768px) {
+  .dashboard {
+    margin-left: 0;
+    padding: 1rem;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}
