@@ -121,7 +121,8 @@ exports.postSignup = async (req, res) => {
     });
 
     // Email verification link
-    const verifyUrl = `http://localhost:3000/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
+    const verificationLink = `${process.env.BASE_URL}/verify-email?token=${token}&email=${email}`;
+
 
     // Send verification email
    await transporter.sendMail({
