@@ -3,11 +3,10 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
-const User = require('../models/User'); // your Sequelize User model
-
+const User = require('../models/User'); // Sequelize model
 const saltRounds = 10;
 
-// Email transporter setup (reuse for all email sends)
+// Email transporter setup
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -15,101 +14,70 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
 });
+
+// GET Login
+exports.getLogin = (req, res) => {
+  res.render('pages/login', { message: null });
+};
+
+// POST Login
 exports.postLogin = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // ✅ Check if login is for admin using plain-text .env credentials
+    // Admin login using .env
     if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-      const token = jwt.sign(
-        { email, role: 'admin' },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-      );
+      const token = jwt.sign({ email, role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-      // Set session and cookie for admin
-      req.session.user = {
-        email,
-        isAdmin: true,
-        role: 'admin'
-      };
+      req.session.user = { email, isAdmin: true, role: 'admin' };
       res.cookie('jwt', token, { httpOnly: true });
 
       return res.redirect('/admin/adminDashboard');
     }
 
-    // 🔐 Normal user login from DB
+    // Normal user login
     const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return res.render('pages/login', { message: 'Invalid credentials!' });
-    }
-
-    if (!user.isVerified) {
-      return res.render('pages/login', { message: 'Please verify your email first.' });
-    }
+    if (!user) return res.render('pages/login', { message: 'Invalid credentials!' });
+    if (!user.isVerified) return res.render('pages/login', { message: 'Please verify your email first.' });
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.render('pages/login', { message: 'Invalid credentials!' });
-    }
+    if (!match) return res.render('pages/login', { message: 'Invalid credentials!' });
 
-    const token = jwt.sign(
-      { userId: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    const token = jwt.sign({ userId: user.id, email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     req.session.user = {
       id: user.id,
       email: user.email,
       isAdmin: user.role === 'admin',
-      role: user.role
+      role: user.role,
     };
     res.cookie('jwt', token, { httpOnly: true });
 
-    if (user.role === 'admin') {
-      return res.redirect('/admin/adminDashboard');
-    } else {
-      return res.redirect('/user/home');
-    }
+    return user.role === 'admin' ? res.redirect('/admin/adminDashboard') : res.redirect('/user/home');
   } catch (error) {
     console.error('Login error:', error);
     res.render('pages/login', { message: 'Error during login.' });
   }
 };
 
-// Renders login form
-exports.getLogin = (req, res) => {
-  res.render('pages/login', { message: null });
-};
-
-// Renders signup form
+// GET Signup
 exports.getSignup = (req, res) => {
   res.render('pages/signup', { message: null });
 };
 
-// Handles signup form
+// POST Signup
 exports.postSignup = async (req, res) => {
   const { firstName, lastName, email, password, role } = req.body;
 
   try {
-    // Check if user already exists
     const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      return res.render('pages/signup', { message: '⚠️ Email already registered!' });
-    }
+    if (existingUser) return res.render('pages/signup', { message: '⚠️ Email already registered!' });
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Generate email verification token
-    const verificationToken = jwt.sign(
-      { email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    const verificationToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const verifyUrl = `${process.env.BASE_URL}/verify-email?token=${verificationToken}&email=${email}`;
 
-    // Create user in the database
     await User.create({
       firstName,
       lastName,
@@ -120,36 +88,26 @@ exports.postSignup = async (req, res) => {
       isVerified: false,
     });
 
-    // Email verification link
-    const verificationLink = `${process.env.BASE_URL}/verify-email?token=${token}&email=${email}`;
-
-
-    // Send verification email
-   await transporter.sendMail({
-    from: `"Sherubtse Student Project Showcase" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: '📩 Please verify your email',
-    html: `
-      <h3>Hello ${firstName},</h3>
-      <p>Please verify your email by clicking the link below:</p>
-      <a href="${verifyUrl}" target="_blank" style="background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; display: inline-block; margin-bottom: 15px;">Verify Email</a>
-      <p>This link expires in 1 hour.</p>
-    `,
-  });
-
-    // Show success message and redirect to login
-    return res.render('pages/verify-message', {
-      email,
-      firstName,
+    await transporter.sendMail({
+      from: `"Sherubtse Student Project Showcase" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: '📩 Please verify your email',
+      html: `
+        <h3>Hello ${firstName},</h3>
+        <p>Please verify your email by clicking the button below:</p>
+        <a href="${verifyUrl}" target="_blank" style="background: #4CAF50; color: white; padding: 10px 20px; text-decoration: none;">Verify Email</a>
+        <p>This link expires in 1 hour.</p>
+      `,
     });
+
+    res.render('pages/verify-message', { email, firstName });
 
   } catch (error) {
     console.error('Signup Error:', error);
-    return res.render('pages/signup', {
-      message: '❌ Error during signup. Please try again.',
-    });
+    res.render('pages/signup', { message: '❌ Error during signup. Please try again.' });
   }
 };
+
 // Email verification route
 exports.verifyEmail = async (req, res) => {
   const { token } = req.query;
@@ -158,33 +116,15 @@ exports.verifyEmail = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const email = decoded.email;
 
-    // Update user to mark verified and clear token
-    await User.update(
-      { isVerified: true, verificationToken: null },
-      { where: { email } }
-    );
+    await User.update({ isVerified: true, verificationToken: null }, { where: { email } });
 
-    // Send success message with a login button
     res.send(`
       <html>
         <head>
           <title>Email Verified</title>
           <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin-top: 50px;
-            }
-            .btn {
-              background-color: #4CAF50;
-              color: white;
-              padding: 12px 24px;
-              text-decoration: none;
-              font-size: 16px;
-              border-radius: 6px;
-              display: inline-block;
-              margin-top: 20px;
-            }
+            body { font-family: Arial; text-align: center; margin-top: 50px; }
+            .btn { background-color: #4CAF50; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; }
           </style>
         </head>
         <body>
@@ -197,18 +137,8 @@ exports.verifyEmail = async (req, res) => {
   } catch (error) {
     res.send(`
       <html>
-        <head>
-          <title>Verification Failed</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              text-align: center;
-              margin-top: 50px;
-              color: red;
-            }
-          </style>
-        </head>
-        <body>
+        <head><title>Verification Failed</title></head>
+        <body style="font-family: Arial; text-align: center; margin-top: 50px; color: red;">
           <h2>❌ Invalid or expired verification link.</h2>
         </body>
       </html>
@@ -216,42 +146,31 @@ exports.verifyEmail = async (req, res) => {
   }
 };
 
-
-// Renders forgot password page
+// GET Forgot Password
 exports.getForgotPassword = (req, res) => {
   res.render('pages/forgot-password', { message: null });
 };
 
-// Sends a password reset link to the user email
+// POST Forgot Password
 exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
 
   try {
     const user = await User.findOne({ where: { email } });
-    if (!user) {
-      return res.render('pages/forgot-password', { message: 'Email not found' });
-    }
+    if (!user) return res.render('pages/forgot-password', { message: 'Email not found' });
 
-    // Generate a password reset token (expires in 1 hour)
     const resetToken = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    await User.update({ resetToken }, { where: { email } });
 
-    // Store the reset token in the database
-    await User.update(
-      { resetToken },
-      { where: { email } }
-    );
-
-    // Send email with reset link
     const resetLink = `${process.env.BASE_URL}/reset-password?token=${resetToken}`;
 
-    const mailOptions = {
+    await transporter.sendMail({
       from: `"Sherubtse Student Project Showcase" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Password Reset Request',
       text: `Click the link below to reset your password:\n\n${resetLink}`,
-    };
+    });
 
-    await transporter.sendMail(mailOptions);
     res.render('pages/forgot-password', { message: 'Password reset link has been sent to your email.' });
 
   } catch (error) {
@@ -260,14 +179,13 @@ exports.forgotPassword = async (req, res) => {
   }
 };
 
-// Renders reset password page
+// GET Reset Password Page
 exports.getResetPassword = (req, res) => {
   const { token } = req.query;
   res.render('pages/reset-password', { token, message: null });
 };
 
-// Reset password
-// Reset password
+// POST Reset Password
 exports.resetPassword = async (req, res) => {
   const { token, newPassword } = req.body;
 
@@ -277,143 +195,42 @@ exports.resetPassword = async (req, res) => {
 
     if (!user) {
       return res.send(`
-        <html>
-          <head>
-            <style>
-              body {
-                font-family: Arial, sans-serif;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-              }
-              .card {
-                border: 1px solid #ccc;
-                border-radius: 10px;
-                padding: 30px;
-                text-align: center;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-              }
-              .btn {
-                margin-top: 20px;
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 16px;
-              }
-            </style>
-          </head>
-          <body>
-            <div class="card">
-              <h2>⚠️ User not found</h2>
-              <a href="/login"><button class="btn">Go to Login</button></a>
-            </div>
-          </body>
-        </html>
+        <html><body style="font-family: Arial; text-align: center; margin-top: 50px;">
+        <h2>⚠️ User not found</h2>
+        <a href="/login"><button style="padding: 10px 20px; margin-top: 20px;">Go to Login</button></a>
+        </body></html>
       `);
     }
 
-    // Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    await User.update({ password: hashedPassword, resetToken: null }, { where: { email: decoded.email } });
 
-    await User.update(
-      { password: hashedPassword, resetToken: null },
-      { where: { email: decoded.email } }
-    );
-
-    // Send success card
     return res.send(`
       <html>
         <head>
           <style>
-            body {
-              font-family: Arial, sans-serif;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-              background-color: #f4f4f4;
-            }
-            .card {
-              background-color: white;
-              padding: 30px;
-              border-radius: 10px;
-              box-shadow: 0 0 10px rgba(0,0,0,0.1);
-              text-align: center;
-            }
-            .btn {
-              margin-top: 20px;
-              background-color: #007BFF;
-              color: white;
-              padding: 10px 20px;
-              border: none;
-              border-radius: 5px;
-              cursor: pointer;
-              font-size: 16px;
-            }
+            body { font-family: Arial; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
+            .card { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: center; }
+            .btn { background-color: #007BFF; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
           </style>
         </head>
         <body>
           <div class="card">
             <h2>✅ Password Reset Successfully</h2>
             <p>You can now log in with your new password.</p>
-            <a href="/login"><button class="btn">OK</button></a>
+            <a href="/login" class="btn">Login</a>
           </div>
         </body>
       </html>
     `);
+
   } catch (error) {
     console.error(error);
     return res.send(`
-      <html>
-        <head>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-            }
-            .card {
-              border: 1px solid red;
-              border-radius: 10px;
-              padding: 30px;
-              text-align: center;
-              box-shadow: 0 2px 10px rgba(255, 0, 0, 0.2);
-            }
-            .btn {
-              margin-top: 20px;
-              background-color: red;
-              color: white;
-              padding: 10px 20px;
-              border: none;
-              border-radius: 5px;
-              cursor: pointer;
-              font-size: 16px;
-            }
-          </style>
-        </head>
-        <body>
-          <div class="card">
-            <h2>❌ Invalid or expired token</h2>
-            <a href="/login"><button class="btn">Go to Login</button></a>
-          </div>
-        </body>
-      </html>
+      <html><body style="font-family: Arial; text-align: center; margin-top: 50px; color: red;">
+      <h2>❌ Invalid or expired reset token.</h2>
+      <a href="/forgot-password"><button style="padding: 10px 20px; margin-top: 20px;">Try Again</button></a>
+      </body></html>
     `);
   }
 };
-
-
-exports.logout = (req, res) => {
-  console.log('🔁 Logout route hit');
-  res.clearCookie('jwt', { httpOnly: true, path: '/' });
-  res.send('Logged out');
-};
-
-
-
