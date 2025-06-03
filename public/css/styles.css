@@ -1,15 +1,6 @@
-/* Reset and Base Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fdfcf8;
-  color: #333;
-  line-height: 1.6;
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
 
 /* Navbar */
@@ -17,110 +8,136 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(to right, #ffa500, #ff8c00);
-  padding: 14px 24px;
+  background-color: #FFA500;
+  padding: 10px 20px;
   position: fixed;
-  top: 0;
   width: 100%;
-  z-index: 100;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  top: 0;
+  z-index: 1000;
+  flex-wrap: wrap;
+  box-sizing: border-box;  
 }
 
 .navbar-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .navbar-left img {
   height: 40px;
+  margin-right: 10px;
 }
 
 .navbar-left span {
-  font-size: 22px;
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  margin-right: 20px;
 }
 
 .auth-buttons {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
-.auth-buttons .btn {
-  text-decoration: none;
-  padding: 8px 18px;
-  border-radius: 6px;
+.auth-buttons a.btn {
+  padding: 8px 15px;
   background-color: #fff;
-  color: #ffa500;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(255, 165, 0, 0.3);
+  color: #333;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.auth-buttons .btn:hover {
-  background-color: #ffa500;
-  color: #fff;
+.auth-buttons a.btn:hover {
+  background-color: #333;
+  color: #bfc4c5;
   transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
-
 /* Background Section */
 .background-section {
-  margin-top: 70px;
+  position: relative;
   height: 100vh;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-    url('/images/college.jpg') no-repeat center center/cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 15px;
+  overflow: hidden;
+  margin-top: 60px;
+}
+
+.background-image {
+  background-image: url('/images/college.jpg'); /* Use your actual image path */
+  background-size: cover;
+  background-position: center;
+  filter: blur(10px);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 0;
+  transition: transform 1s ease;
+}
+
+/* Add dark color overlay */
+.background-image::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Dark overlay - adjust opacity as needed */
+  z-index: 1; /* Places the overlay above the background image */
+  pointer-events: none; /* Allows clicks to pass through */
 }
 
 .overlay-content {
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 40px;
-  border-radius: 16px;
+  position: relative;
+  z-index: 1;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  max-width: 700px;
-  width: 100%;
-  animation: fadeInUp 1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.overlay-box {
+  background-color: rgba(164, 217, 228, 0.85);
+  padding: 30px 40px;
+  border-radius: 15px;
+  max-width: 600px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  animation: fadeInUp 1s ease-in-out;
+  transition: transform 0.3s ease;
+}
+
+.overlay-box:hover {
+  transform: scale(1.02);
 }
 
 .overlay-box h1 {
   font-size: 36px;
-  color: #222;
-  margin-bottom: 20px;
-}
-
-.decorative-line {
-  width: 60px;
-  height: 5px;
-  background: linear-gradient(to right, #ffd480, #ffa500);
-  border-radius: 5px;
-  margin: 0 auto 20px;
+  margin-bottom: 15px;
+  color: #333;
 }
 
 .quote {
   font-size: 18px;
   font-style: italic;
-  color: #444;
+  color: #555;
+  margin-top: 10px;
+  position: relative;
 }
 
-/* Footer */
-footer {
-  background: linear-gradient(to right, #ffa500, #ff8c00);
-  color: white;
-  text-align: center;
-  padding: 25px 15px;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.8;
-  box-shadow: 0 -3px 8px rgba(0,0,0,0.1);
+.decorative-line {
+  width: 50px;
+  height: 4px;
+  background-color: #FFA500;
+  margin: 0 auto 15px;
+  border-radius: 5px;
 }
 
-/* Animations */
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -132,29 +149,46 @@ footer {
   }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 14px 20px;
-  }
-
-  .auth-buttons {
-    width: 100%;
-    justify-content: flex-start;
+/* Responsive Improvements */
+@media (max-width: 600px) {
+  .overlay-box {
+    padding: 20px;
   }
 
   .overlay-box h1 {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .quote {
-    font-size: 16px;
+    font-size: 14px;
+  }
+}
+/* Footer */
+footer {
+  background-color: #FFA500;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .overlay-content {
-    padding: 25px;
+  .auth-buttons {
+    margin-top: 10px;
+  }
+
+  .overlay-content h1 {
+    font-size: 24px;
+  }
+
+  .overlay-content .quote {
+    font-size: 14px;
   }
 }
