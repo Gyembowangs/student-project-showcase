@@ -1,0 +1,146 @@
+/* ===== GLOBAL RESET & BASE ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== MAIN CONTENT WRAPPER ===== */
+.content {
+  flex: 1;
+}
+
+/* ===== FOOTER STYLING ===== */
+.footer {
+  background-color: #FFA500;
+  color: white;
+  padding: 20px;
+  width: 100vw; /* Full viewport width */
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* ===== FOOTER CONTENT WRAPPER ===== */
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* ===== INFO AND LINKS BLOCKS ===== */
+.footer-info,
+.quick-links {
+  flex: 1 1 250px;
+  min-width: 200px;
+}
+
+.footer-info p {
+  margin: 5px 0;
+  line-height: 1.6;
+}
+
+/* ===== QUICK LINKS ===== */
+.quick-links h4 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.quick-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.quick-links li {
+  margin: 5px 0;
+}
+
+.quick-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: text-decoration 0.3s;
+}
+
+.quick-links a:hover {
+  text-decoration: underline;
+}
+
+/* ===== HORIZONTAL SEPARATOR ===== */
+hr {
+  border: 0;
+  height: 1px;
+  background: white;
+  margin: 20px 0;
+}
+
+/* ===== COPYRIGHT TEXT ===== */
+.footer p:last-child {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .footer-content {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .footer-info,
+  .quick-links {
+    flex: 1 1 45%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-info,
+  .quick-links {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .footer p:last-child {
+    text-align: left;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .footer {
+    padding: 15px;
+  }
+
+  .footer-info p,
+  .quick-links li {
+    font-size: 14px;
+  }
+
+  .quick-links h4 {
+    font-size: 16px;
+  }
+
+  .footer p:last-child {
+    font-size: 13px;
+  }
+}
