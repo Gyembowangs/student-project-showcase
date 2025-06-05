@@ -17,6 +17,7 @@ router.post('/projects/:id/reject', adminController.rejectProject);
 
 // Delete a project by id
 router.post('/projects/delete/:projectId', isAuthenticated, isAdmin, adminController.deleteProject);
+
 router.get('/userManagement', adminController.getUserManagement);
 router.post('/userManagement/delete/:id', adminController.deleteUser);
 // Admin user management page (just rendering the view for now)
