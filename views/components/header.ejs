@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <title>Student Showcase</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<style>
+  <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -62,6 +61,10 @@
       text-decoration: none;
       color: white;
       font-weight: bold;
+    }
+
+    .nav a.active {
+      border-bottom: 2px solid white;
     }
 
     .dropdown {
@@ -178,6 +181,10 @@
       background-color: rgba(255, 255, 255, 0.2);
     }
 
+    .sidebar a.active {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+
     @media (max-width: 768px) {
       .nav {
         display: none;
@@ -192,14 +199,15 @@
       }
     }
   </style>
+</head>
 <body>
 
-  <!-- Sidebar for small screens -->
+  <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <ul>
       <li><a href="/user/home" onclick="closeSidebar()">Home</a></li>
       <li><a href="/user/aboutus" onclick="closeSidebar()">About Us</a></li>
-      <% if (session.user && session.user.role === 'student') { %>
+      <% if (session && session.user && session.user.role === 'student') { %>
         <li><a href="/user/upload" onclick="closeSidebar()">Upload</a></li>
       <% } %>
       <li><a href="/user/projects" onclick="closeSidebar()">Projects</a></li>
@@ -226,7 +234,7 @@
       <ul>
         <li><a href="/user/home">Home</a></li>
         <li><a href="/user/aboutus">About Us</a></li>
-        <% if (session && session.user && session.user.role === 'student'){ %>
+        <% if (session && session.user && session.user.role === 'student') { %>
           <li><a href="/user/upload">Upload</a></li>
         <% } %>
         <li><a href="/user/projects">Projects</a></li>
@@ -234,16 +242,18 @@
     </nav>
 
     <!-- User Profile Dropdown -->
-    <div class="dropdown" id="userDropdown" onclick="toggleDropdown(event)">
-      <img src="/images/user-profile.png" alt="User" />
-      <span class="arrow">▼</span>
-      <div class="dropdown-menu" id="dropdownMenu">
-        <% if (session.user && session.user.role === 'student') { %>
-          <a href="/user/dashboard">Dashboard</a>
-        <% } %>
-        <a href="/logout">Logout</a>
+    <% if (session && session.user) { %>
+      <div class="dropdown" id="userDropdown" onclick="toggleDropdown(event)">
+        <img src="/images/user-profile.png" alt="User" />
+        <span class="arrow">▼</span>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <% if (session.user.role === 'student') { %>
+            <a href="/user/dashboard">Dashboard</a>
+          <% } %>
+          <a href="/logout">Logout</a>
+        </div>
       </div>
-    </div>
+    <% } %>
 
   </header>
 
@@ -269,7 +279,7 @@
     window.addEventListener('click', function (e) {
       const dropdown = document.getElementById('userDropdown');
       const menu = document.getElementById('dropdownMenu');
-      if (!dropdown.contains(e.target)) {
+      if (dropdown && !dropdown.contains(e.target)) {
         menu.classList.remove('show');
       }
 
@@ -281,22 +291,23 @@
     });
 
     document.addEventListener('DOMContentLoaded', function () {
-    const currentPath = window.location.pathname;
+      const currentPath = window.location.pathname;
 
-    // Desktop nav
-    document.querySelectorAll('.nav a').forEach(link => {
-      if (link.getAttribute('href') === currentPath) {
-        link.classList.add('active');
-      }
-    });
+      // Desktop nav
+      document.querySelectorAll('.nav a').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active');
+        }
+      });
 
-    // Sidebar nav
-    document.querySelectorAll('.sidebar a').forEach(link => {
-      if (link.getAttribute('href') === currentPath) {
-        link.classList.add('active');
-      }
+      // Sidebar nav
+      document.querySelectorAll('.sidebar a').forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active');
+        }
+      });
     });
-  });
   </script>
+
 </body>
 </html>
