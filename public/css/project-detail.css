@@ -1,4 +1,8 @@
-
+/* General body style */
+body {
+  font-family: 'Poppins', sans-serif;
+  margin-top: 30px;
+}
 
 .project-card {
   max-width: 800px;
