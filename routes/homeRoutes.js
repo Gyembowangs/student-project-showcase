@@ -5,7 +5,7 @@ const { isAuthenticated } = require('../middleware/authMiddleware');
 
 // Home route (only accessible by logged-in users)
 router.get('/home', isAuthenticated, (req, res) => {
-    res.render('user/home',{ session: req.session })
+    res.render('user/home', { user: req.session.user })
 });
 
 
