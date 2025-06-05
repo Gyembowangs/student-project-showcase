@@ -29,7 +29,7 @@ const app = express();
 const PORT = process.env.PORT || 3015;
 
 // Trust proxy in production
-if (process.env.NODE_ENV === "pr oduction") {
+if (process.env.NODE_ENV === "production") {
   app.set("trust proxy", 1);
 }
 
