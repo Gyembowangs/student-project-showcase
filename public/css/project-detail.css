@@ -1,7 +1,7 @@
 /* General body style */
 body {
   font-family: 'Poppins', sans-serif;
-  margin-top: 30px;
+  padding-top: 50px;
 }
 
 .project-card {
