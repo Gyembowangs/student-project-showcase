@@ -205,7 +205,7 @@
 </head>
 <body>
 
-  <!-- Sidebar -->
+  <!-- Sidebar for Mobile -->
   <div class="sidebar" id="sidebar">
     <ul>
       <li><a href="/user/home" onclick="closeSidebar()">Home</a></li>
@@ -219,20 +219,20 @@
 
   <!-- Header -->
   <header class="header">
-    <!-- Hamburger -->
+    <!-- Hamburger for mobile -->
     <div class="menu-toggle" onclick="toggleSidebar(this)">
       <span></span>
       <span></span>
       <span></span>
     </div>
 
-    <!-- Logo -->
+    <!-- Logo Section -->
     <div class="logo">
       <img src="/images/logo.png" alt="Logo" class="logo-image" />
       <h1>Student Project Showcase</h1>
     </div>
 
-    <!-- Desktop Navigation -->
+    <!-- Navigation for Desktop -->
     <nav class="nav">
       <ul>
         <li><a href="/user/home">Home</a></li>
@@ -252,12 +252,13 @@
         <div class="dropdown-menu" id="dropdownMenu">
           <% if (session.user.role === 'student') { %>
             <a href="/user/dashboard">Dashboard</a>
+          <% } else if (session.user.role === 'admin') { %>
+            <a href="/admin/dashboard">Admin Dashboard</a>
           <% } %>
           <a href="/logout">Logout</a>
         </div>
       </div>
     <% } %>
-
   </header>
 
   <!-- Scripts -->
@@ -296,15 +297,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       const currentPath = window.location.pathname;
 
-      // Desktop nav
-      document.querySelectorAll('.nav a').forEach(link => {
-        if (link.getAttribute('href') === currentPath) {
-          link.classList.add('active');
-        }
-      });
-
-      // Sidebar nav
-      document.querySelectorAll('.sidebar a').forEach(link => {
+      document.querySelectorAll('.nav a, .sidebar a').forEach(link => {
         if (link.getAttribute('href') === currentPath) {
           link.classList.add('active');
         }
